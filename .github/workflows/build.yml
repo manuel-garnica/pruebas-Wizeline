@@ -45,11 +45,6 @@ jobs:
       - name: Validate code coverage
         id: coverage
         uses: madrapps/jacoco-report@v1.2
-        permissions:
-          id-token: write
-          contents: read
-          issues: write
-          pull-requests: write
         with:
           paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
           token: ${{ secrets.GITHUB_TOKEN }}
