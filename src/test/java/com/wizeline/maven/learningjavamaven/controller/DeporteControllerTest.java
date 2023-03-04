@@ -60,7 +60,7 @@ class DeporteControllerTest {
 
 
     @Test
-    void testObtenerDeportes2() throws Exception {
+    void testObtenerDeportesdesdeService() throws Exception {
         when(deporteService.obtenerTodosDeportes()).thenReturn(new ArrayList<>());
         ResponseEntity<List<DeporteDTO>> responseEntity = deporteController.obtenerDeportes();
         assertAll(

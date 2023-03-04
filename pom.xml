@@ -159,9 +159,8 @@
 				<configuration>
 					<excludes>
 						<exclude>com/wizeline/maven/learningjavamaven/SpringbootApplication.class</exclude>
-						<exclude>com/wizeline/maven/learningjavamaven/batch.*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/batch/**/*</exclude>
 					</excludes>
-
 				</configuration>
 				<executions>
 					<execution>
