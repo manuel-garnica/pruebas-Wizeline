@@ -18,6 +18,7 @@
 		<jacoco.version>0.8.8</jacoco.version>
 		<sonar.organization>manuel-garnica</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
