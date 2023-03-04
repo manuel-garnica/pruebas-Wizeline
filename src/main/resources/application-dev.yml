@@ -1,0 +1,20 @@
+consumers:
+  createUser: '/api/createUser'
+  createUsers: '/api/createUsers'
+  userAccount: '/api/getUserAccount'
+  accounts: '/api/getAccounts'
+  accountsGroupByType: '/api/getAccountsGroupByType'
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info , beans , *
+  endpoint:
+    metrics:
+      enabled: true
+    health:
+      show-details: always
+    beans:
+      enabled: true
