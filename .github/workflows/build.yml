@@ -42,3 +42,4 @@ jobs:
           path: |
             target/site
             target/dependency-check-report.html
+
