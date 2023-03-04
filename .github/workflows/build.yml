@@ -35,3 +35,22 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=manuel-garnica_pruebas-Wizeline
+      - name: Run Coverage
+        run: test -f pom.xml
+      - name: Upload Jacoco report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-report
+          path: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+      - name: Validate code coverage
+        id: coverage
+        uses: madrapps/jacoco-report@v1.2
+        with:
+          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+          title: Code Coverage
+      - name: Show coverage status
+        if: steps.coverage.outcome == 'failure'
+        run: echo "Coverage check failed. Please check the details above."

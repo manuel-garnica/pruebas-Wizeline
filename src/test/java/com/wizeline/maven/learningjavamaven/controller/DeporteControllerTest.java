@@ -29,4 +29,13 @@ class DeporteControllerTest {
                 () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode())
         );
     }
+    @Test
+    void obtenerDeportesSingleton2() {
+        ResponseEntity<List<DeporteDTO>> responseEntity= deporteController.obtenerDeportesSingleton();
+
+        assertAll(
+                () -> assertNotNull(responseEntity),
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode())
+        );
+    }
 }
