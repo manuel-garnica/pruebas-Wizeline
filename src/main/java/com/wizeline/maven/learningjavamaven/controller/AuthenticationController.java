@@ -3,6 +3,7 @@ package com.wizeline.maven.learningjavamaven.controller;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ public class AuthenticationController {
     private UserDetailsService userDetailsService;
 
     @PostMapping("/authenticate")
+    @Operation(summary = "Genera Token para las paths con autentificacion")
     public ResponseEntity<?> getAuthenticationToken(@RequestBody UserDTO userDTO) {
         UserDetails userDetails;
         try {

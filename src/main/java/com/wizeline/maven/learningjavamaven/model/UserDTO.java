@@ -16,6 +16,14 @@ public class UserDTO {
 	 * @return the user
 	 */
 	private Date incioSesion;
+	public UserDTO() {
+	}
+
+	public UserDTO(String username, String password) {
+		this.user=username;
+		this.password=password;
+	}
+
 	public String getUser() {
 		return user;
 	}

@@ -10,6 +10,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,15 @@ import com.wizeline.maven.learningjavamaven.model.BookBean;
 import com.wizeline.maven.learningjavamaven.model.XmlBean;
 @RequestMapping("/jaxb")
 @RestController
+@Tag(name = "JAXB", description = "Procesamiento de XML ")
+
 public class JAXBController {
 
     private static final Logger LOGGER = Logger.getLogger(JAXBController.class.getName());
 
     @GetMapping("/getXML")
-    public ResponseEntity<XmlBean> loginUser(){
+    @Operation(summary = "Obtiene Json de un XML")
+    public ResponseEntity<XmlBean> getXML(){
         LOGGER.info("Test JAXB");
         XmlBean response = new XmlBean();
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -41,7 +46,7 @@ public class JAXBController {
     }
 
 
-    public void marshal() throws JAXBException, IOException {
+    public static void marshal() throws JAXBException, IOException {
         BookBean book = new BookBean();
         book.setId(1L);
         book.setName("Book1");

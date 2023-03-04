@@ -6,6 +6,8 @@ import com.wizeline.maven.learningjavamaven.model.Post;
 import com.wizeline.maven.learningjavamaven.model.ResponseDTO;
 import com.wizeline.maven.learningjavamaven.service.BankAccountService;
 import com.wizeline.maven.learningjavamaven.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +36,7 @@ import static com.wizeline.maven.learningjavamaven.utils.Utils.*;
 
 @RequestMapping("/api")
 @RestController
+@Tag(name = "Banking Account ", description = "Api para las cuentas bancarias")
 public class BankingAccountController {
 
     private static final String SUCCESS_CODE = "OK000";
@@ -54,6 +58,7 @@ public class BankingAccountController {
     String msgProcPeticion = "LearningJava - Inicia procesamiento de peticion ...";
 
     @PostMapping(path = "/send/{userId}")
+    @Operation(summary = "Envia usuario para su posterior Procesamiento")
     public void sendUserAccount(@PathVariable Integer userId) {
         List<BankAccountDTO> accounts = bankAccountService.getAccounts();
         BankAccountDTO account = accounts.get(userId);
@@ -61,6 +66,7 @@ public class BankingAccountController {
         this.template.send("prueba-Topic", account);
     }
     @GetMapping("/getUserAccount")
+    @Operation(summary = "Obtiene las cuentas bancarias por usuario")
     public ResponseEntity<?> getUserAccount(@RequestParam String user, @RequestParam String password, @RequestParam String date) {
         LOGGER.info(msgProcPeticion);
         Instant inicioDeEjecucion = Instant.now();
@@ -103,6 +109,7 @@ public class BankingAccountController {
     }
 
     @GetMapping("/getAccounts")
+    @Operation(summary = "Obtiene Cuentas Bancarias")
     public ResponseEntity<List<BankAccountDTO>> getAccounts() {
         LOGGER.info("The port used is "+ port);
         LOGGER.info(msgProcPeticion);
@@ -124,6 +131,7 @@ public class BankingAccountController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getAccountsGroupByType")
+    @Operation(summary = "Obtiene Cuentas Bancarias agrupadas por tio")
     public ResponseEntity<Map<String, List<BankAccountDTO>>> getAccountsGroupByType() {
 
         LOGGER.info(msgProcPeticion);
@@ -134,7 +142,13 @@ public class BankingAccountController {
 
         // Aqui implementaremos la programación funcional
         Map<String, List<BankAccountDTO>> groupedAccounts;
-        Function<BankAccountDTO, String> groupFunction = (account) -> account.getAccountType().toString();
+       // Function<BankAccountDTO, String> groupFunction = (account) -> account.getAccountType().toString();
+        Function<BankAccountDTO, String> groupFunction = (account) -> {
+            if (account.getAccountType() == null) {
+                return "";
+            }
+            return account.getAccountType().toString();
+        };
         groupedAccounts = accounts.stream().collect(Collectors.groupingBy(groupFunction));
         Instant finalDeEjecucion = Instant.now();
 
@@ -145,20 +159,23 @@ public class BankingAccountController {
         return new ResponseEntity<>(groupedAccounts, HttpStatus.OK);
     }
     @GetMapping("/getAccountByName")
+    @Operation(summary = "Obtiene Cuentas Bancarias con  el filtro tipo de cuenta")
     public ResponseEntity< List<BankAccountDTO>> getAccountByName(@RequestParam String name) {
-
         LOGGER.info(msgProcPeticion);
         Instant inicioDeEjecucion = Instant.now();
         String responseText = "";
         LOGGER.info("LearningJava - Procesando peticion HTTP de tipo GET");
         List<BankAccountDTO> accounts = bankAccountService.getAccounts();
         // Aquí implementaremos nuestro código de filtrar las cuentas por nombre utilizando optional
-        Optional<String> Optionalnombre = Optional.ofNullable(name);
+        Optional<String> Optionalnombre = Optional.of(name);
         String nombre = Optionalnombre.get();
-        List<BankAccountDTO> accountsFiltered = bankAccountService.getAccounts();
-        accountsFiltered.clear();
+        LOGGER.info(" accounts.size(): "+ accounts.size());
+        List<BankAccountDTO> accountsFiltered  =new ArrayList<>();
+        LOGGER.info("nombre: "+nombre);
+        LOGGER.info(" accounts.size(): "+ accounts.size());
         for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i).getAccountName().indexOf(nombre) >= 0) {
+            LOGGER.info("(accounts.get(i).getAccountName(): "+accounts.get(i).getAccountName());
+            if (accounts.get(i).getAccountName().contains(nombre)) {
                 accountsFiltered.add(accounts.get(i));
                 break;
             }
@@ -172,6 +189,7 @@ public class BankingAccountController {
     }
 
     @GetMapping("/getEncryptedAccounts")
+    @Operation(summary = "Obtiene Cuentas Bancarias con  datos encriptados")
     public ResponseEntity< List<BankAccountDTO>> getEncryptedAccounts() {
 
         LOGGER.info(msgProcPeticion);
@@ -211,21 +229,7 @@ public class BankingAccountController {
                 accounts.get(i).setCountry(accountCountryCipher.toString());
 
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchProviderException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        } catch (ShortBufferException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException(e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -240,6 +244,7 @@ public class BankingAccountController {
 
 
     @DeleteMapping("/deleteAccounts")
+    @Operation(summary = "Elimina todas Cuentas Bancarias ")
     public ResponseEntity<String> deleteAccounts() {
         if(bankAccountService.deleteAccounts()){
             return new ResponseEntity<>("All accounts deleted", HttpStatus.OK);
@@ -250,6 +255,7 @@ public class BankingAccountController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/getAccountByUser")
+    @Operation(summary = "Obtiene Cuentas Bancarias con  el filtro usuario")
     public ResponseEntity<List<BankAccountDTO>> getAccountByUser(@RequestParam String user) {
         LOGGER.info(msgProcPeticion);
         Instant inicioDeEjecucion = Instant.now();
@@ -269,12 +275,14 @@ public class BankingAccountController {
 
     @PreAuthorize("hasRole('GUEST')")
     @GetMapping("/sayHello")
+    @Operation(summary = "Prueba")
     public ResponseEntity<String> sayHelloGuest() {
         return new ResponseEntity<>("Hola invitado!!", HttpStatus.OK);
     }
 
     //The usage of FeignClient for demo purposes
     @GetMapping("/getExternalUser/{userId}")
+    @Operation(summary = "Obtiene usuarios  externos")
     public ResponseEntity<Post> getExternalUser(@PathVariable Long userId) {
 
         Post postTest = accountsJSONClient.getPostById(userId);
