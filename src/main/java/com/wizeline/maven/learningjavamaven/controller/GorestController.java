@@ -5,6 +5,8 @@ import com.wizeline.maven.learningjavamaven.model.UserGorest;
 import com.wizeline.maven.learningjavamaven.service.GorestService;
 import com.wizeline.maven.learningjavamaven.service.GorestServiceImpl;
 import com.wizeline.maven.learningjavamaven.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,12 +23,14 @@ import java.util.logging.Logger;
 
 @RequestMapping("/apiGorest")
 @RestController
+@Tag(name = "Gorest", description = "Api externa Gorest")
 public class GorestController {
     @Autowired
     GorestServiceImpl gorestService;
     private static final Logger LOGGER = Logger.getLogger(GorestController.class.getName());
 
     @GetMapping("/getUsers")
+    @Operation(summary = "Obtiene los usuarios expuestos del Api")
     public ResponseEntity<List<UserGorest>> getUserGorests() {
         LOGGER.info("");
         Instant inicioDeEjecucion = Instant.now();
@@ -47,6 +51,7 @@ public class GorestController {
 
     }
     @GetMapping("/getUsersV2")
+    @Operation(summary = "Obtiene los usuarios expuestos del Api V2")
     public ResponseEntity<List<UserGorest>> getUserGorestsV2() {
         LOGGER.info("getUsersV2");
         Instant inicioDeEjecucion = Instant.now();
@@ -68,6 +73,7 @@ public class GorestController {
     }
 
     @GetMapping("/getUser")
+    @Operation(summary = "Obtiene los usuarios en String expuestos del Api")
     public ResponseEntity<UserGorest> getUserGorest() {
         LOGGER.info("");
         Instant inicioDeEjecucion = Instant.now();

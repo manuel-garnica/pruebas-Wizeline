@@ -1,5 +1,6 @@
 package com.wizeline.maven.learningjavamaven.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -30,6 +31,7 @@ public class BatchController {
     private UserJob userJob;
 
     @GetMapping(path = "/start")
+    @Operation(summary = "Inicia al Batch para procesamientode Usuarios")
     public ResponseEntity<String> startBatch() {
         JobParameters Parameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
