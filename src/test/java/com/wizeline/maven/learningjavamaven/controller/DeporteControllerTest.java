@@ -3,14 +3,21 @@ package com.wizeline.maven.learningjavamaven.controller;
 import com.wizeline.maven.learningjavamaven.model.DeporteDTO;
 import com.wizeline.maven.learningjavamaven.model.ResponseGenericoDTO;
 import com.wizeline.maven.learningjavamaven.service.DeporteService;
+
 import io.github.bucket4j.Bucket;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +26,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -33,6 +50,8 @@ class DeporteControllerTest {
     private DeporteController deporteController;
     @Mock
     private Bucket bucket;
+
+
     @Test
     void obtenerDeportesSingleton() {
         ResponseEntity<List<DeporteDTO>> responseEntity = deporteController.obtenerDeportesSingleton();
@@ -43,10 +62,22 @@ class DeporteControllerTest {
         );
     }
 
+
     @Test
     void obtenerDeportesSingleton2() {
         ResponseEntity<List<DeporteDTO>> responseEntity = deporteController.obtenerDeportesSingleton();
 
+        assertAll(
+                () -> assertNotNull(responseEntity),
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode())
+        );
+    }
+
+
+    @Test
+    void testObtenerDeportesdesdeService() throws Exception {
+        when(deporteService.obtenerTodosDeportes()).thenReturn(new ArrayList<>());
+        ResponseEntity<List<DeporteDTO>> responseEntity = deporteController.obtenerDeportes();
         assertAll(
                 () -> assertNotNull(responseEntity),
                 () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode())
