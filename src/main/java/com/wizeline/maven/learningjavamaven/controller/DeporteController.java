@@ -25,11 +25,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/deportes")
 @Tag(name = "Deporte", description = "API para la gestión del catalogo deportes")
 public class DeporteController {
+    private static final Logger LOGGER = Logger.getLogger(DeporteController.class.getName());
 
     private final Bucket bucket;
 
@@ -64,6 +66,7 @@ public class DeporteController {
     @GetMapping
     public ResponseEntity<List<DeporteDTO>> obtenerDeportes() {
       if (!bucket.tryConsume(1)) {
+          LOGGER.info("Mas de 5 peticiones");
           return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
       }
         List<DeporteDTO> deportes = deporteService.obtenerTodosDeportes();
@@ -142,8 +145,6 @@ public class DeporteController {
           responseGenericoDTO.setErrors(new ErrorDTO("404","Deporte no encontrado"));
           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseGenericoDTO);
       }
-
-
     }
     @Operation(summary = "Eliminar un deporte por ID", tags = {"Deporte"})
     @ApiResponses(value = {
