@@ -142,8 +142,6 @@ public class DeporteController {
           responseGenericoDTO.setErrors(new ErrorDTO("404","Deporte no encontrado"));
           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseGenericoDTO);
       }
-
-
     }
     @Operation(summary = "Eliminar un deporte por ID", tags = {"Deporte"})
     @ApiResponses(value = {
