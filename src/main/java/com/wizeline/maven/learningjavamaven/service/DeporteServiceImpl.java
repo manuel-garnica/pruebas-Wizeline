@@ -28,15 +28,15 @@ public class DeporteServiceImpl implements DeporteService{
         }
 
         public DeporteDTO actualizarDeporte(String id, DeporteDTO deporte) {
-            Optional<DeporteDTO> deporteExistente = deporteRepository.findById(id);
-            if (deporteExistente.isPresent()) {
-                DeporteDTO deporteActualizado = deporteExistente.get();
-                deporteActualizado.setNombre(deporte.getNombre());
-                deporteActualizado.setDescripcion(deporte.getDescripcion());
-                return deporteRepository.save(deporteActualizado);
-            } else {
-                throw new RuntimeException("Deporte no encontrado");
-            }
+                Optional<DeporteDTO> deporteExistente = deporteRepository.findById(id);
+                if (deporteExistente.isPresent()) {
+                    DeporteDTO deporteActualizado = deporteExistente.get();
+                    deporteActualizado.setNombre(deporte.getNombre());
+                    deporteActualizado.setDescripcion(deporte.getDescripcion());
+                    return deporteRepository.save(deporteActualizado);
+                } else {
+                    throw new RuntimeException("Deporte no encontrado");
+                }
         }
 
         public void eliminarDeporte(String id) {

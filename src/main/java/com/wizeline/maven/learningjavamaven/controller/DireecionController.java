@@ -2,6 +2,8 @@ package com.wizeline.maven.learningjavamaven.controller;
 
 import com.wizeline.maven.learningjavamaven.model.EstadosdeMexico;
 import com.wizeline.maven.learningjavamaven.model.UserDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import java.util.Map;
 
 @RequestMapping("/apiDireccion")
 @RestController
+@Tag(name = "Direecion", description = "API los Estados de Mexico")
 public class DireecionController {
 
     @GetMapping("/obtenerEstadosArray")
+    @Operation(summary = "Regresa Array de los estados de mexico")
     public ResponseEntity<String[]> EstadoArray() {
         EstadosdeMexico estado = new EstadosdeMexico();
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -25,6 +29,7 @@ public class DireecionController {
 
     }
     @GetMapping("/obtenerEstadosLista")
+    @Operation(summary = "Regresa Lista de los estados de mexico")
     public ResponseEntity<List<String>> EstadoLista() {
         EstadosdeMexico estado = new EstadosdeMexico();
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -33,6 +38,7 @@ public class DireecionController {
 
     }
     @GetMapping("/obtenerEstadosMapa")
+    @Operation(summary = "Regresa Mapa de los estados de mexico")
     public ResponseEntity<Map<Integer,String >> EstadoMapa() {
         EstadosdeMexico estado = new EstadosdeMexico();
         HttpHeaders responseHeaders = new HttpHeaders();

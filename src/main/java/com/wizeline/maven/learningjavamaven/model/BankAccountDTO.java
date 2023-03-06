@@ -97,4 +97,18 @@ public class BankAccountDTO {
         this.lastUsage = lastUsage;
     }
 
+    @Override
+    public String toString() {
+        return "BankAccountDTO{" +
+                "accountNumber=" + accountNumber +
+                ", accountName='" + accountName + '\'' +
+                ", user='" + user + '\'' +
+                ", accountBalance=" + accountBalance +
+                ", accountType=" + accountType +
+                ", country='" + country + '\'' +
+                ", accountActive=" + accountActive +
+                ", lastUsage='" + lastUsage + '\'' +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 }

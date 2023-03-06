@@ -119,17 +119,4 @@ public class BankAccountServiceImpl implements BankAccountService {
         bankAccountDTO.setAccountActive(isActive);
         return bankAccountDTO;
     }
-    // Creación de tipo de dato BankAccount con la ayuda de la clase Utils.java
-    private BankAccountDTO buildBankAccount(String user, boolean isActive, Country country, String lastUsage) {
-        BankAccountDTO bankAccountDTO = new BankAccountDTO();
-        bankAccountDTO.setAccountNumber(randomAcountNumber());
-        bankAccountDTO.setAccountName("Dummy Account ".concat(randomInt()));
-        bankAccountDTO.setUser(user);
-        bankAccountDTO.setAccountBalance(randomBalance());
-        bankAccountDTO.setAccountType(pickRandomAccountType());
-        bankAccountDTO.setCountry(getCountry(country));
-        bankAccountDTO.setLastUsage(lastUsage);
-        bankAccountDTO.setAccountActive(isActive);
-        return bankAccountDTO;
-    }
 }

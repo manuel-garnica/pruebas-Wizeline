@@ -139,6 +139,14 @@
 			<artifactId>bucket4j-core</artifactId>
 			<version>7.6.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.openpojo/openpojo -->
+		<dependency>
+			<groupId>com.openpojo</groupId>
+			<artifactId>openpojo</artifactId>
+			<version>0.9.1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -158,8 +166,18 @@
 				<version>${jacoco.version}</version>
 				<configuration>
 					<excludes>
-						<exclude>com/wizeline/maven/learningjavamaven/SpringbootApplication.class</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/LearningjavamavenApplication.class</exclude>
 						<exclude>com/wizeline/maven/learningjavamaven/batch/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/client/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/config/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/consumer/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/batch/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/enums/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/model/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/observer/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/repository/**/*</exclude>
+						<exclude>com/wizeline/maven/learningjavamaven/utils/exceptions/**/*</exclude>
+
 					</excludes>
 				</configuration>
 				<executions>

@@ -42,22 +42,25 @@ public class DeporteController {
     }
     @Autowired
     private DeporteService deporteService;
+    @Operation(summary = "Obtener todos los deportes del Singleton", tags = {"Deporte"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de deportes obtenida correctamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DeporteDTO.class))),
+            @ApiResponse(responseCode = "404", description = "No se encontraron deportes"),
+            @ApiResponse(responseCode = "500", description = "Error en el servicio")})
     @GetMapping("/Singleton")
     public ResponseEntity<List<DeporteDTO>> obtenerDeportesSingleton() {
         CatalogoDeportes catalogoDeportes =CatalogoDeportes.getInstance(deporteService);
        return ResponseEntity.ok(catalogoDeportes.getDeporteDTO());
     }
-  /*  @Operation(summary = "Obtener todos los deportes")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de deportes obtenida correctamente"),
-            @ApiResponse(responseCode = "404", description = "No se encontraron deportes")
-    })*/
   @Operation(summary = "Obtener todos los deportes", tags = {"Deporte"})
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Lista de deportes obtenida correctamente",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = DeporteDTO.class))),
-          @ApiResponse(responseCode = "404", description = "No se encontraron deportes")})
+          @ApiResponse(responseCode = "404", description = "No se encontraron deportes"),
+          @ApiResponse(responseCode = "500", description = "Error en el servicio")})
     @GetMapping
     public ResponseEntity<List<DeporteDTO>> obtenerDeportes() {
       if (!bucket.tryConsume(1)) {
@@ -77,7 +80,8 @@ public class DeporteController {
                                     "    \"descripcion\": \"Deporte de 11 jugadores :D\",\n" +
                                     "    \"fechaRegistro\": \"2022-02-20T19:30:00.000+00:00\"\n" +
                                     "}"))),
-            @ApiResponse(responseCode = "404", description = "Deporte no encontrado")
+            @ApiResponse(responseCode = "404", description = "Deporte no encontrado"),
+            @ApiResponse(responseCode = "500", description = "Error en el servicio")
     })
     @GetMapping("/{id}")
     public ResponseEntity<DeporteDTO> obtenerDeportePorId(@Parameter(description = "ID del deporte a eliminar", required = true) @PathVariable String id) {
@@ -99,7 +103,8 @@ public class DeporteController {
                                     "    \"descripcion\": \"Deporte de 11 jugadores :D\",\n" +
                                     "    \"fechaRegistro\": \"2022-02-20T19:30:00.000+00:00\"\n" +
                                     "}"))),
-            @ApiResponse(responseCode = "400", description = "Bad Request")
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "500", description = "Error en el servicio")
     })
     @PostMapping
     public ResponseEntity<DeporteDTO> crearDeporte(@RequestBody DeporteDTO deporte) {
@@ -110,7 +115,7 @@ public class DeporteController {
         observable.setFueEditado(true);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoDeporte);
     }
-    @Operation(summary = "Actualziacion del deporte por ID", tags = {"Deporte"})
+    @Operation(summary = "Actualizacion del deporte por ID", tags = {"Deporte"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Deporte  correctamente",
                     content = @Content(mediaType = "application/json",
@@ -137,13 +142,7 @@ public class DeporteController {
           responseGenericoDTO.setErrors(new ErrorDTO("404","Deporte no encontrado"));
           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseGenericoDTO);
       }
-      catch (Exception e){
-          responseGenericoDTO.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-          responseGenericoDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-          responseGenericoDTO.setData(deporteDTO);
-          responseGenericoDTO.setErrors(new ErrorDTO(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"Error revisar"));
-          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseGenericoDTO);
-      }
+
 
     }
     @Operation(summary = "Eliminar un deporte por ID", tags = {"Deporte"})

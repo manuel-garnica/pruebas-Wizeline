@@ -13,6 +13,14 @@ public class EstadosdeMexico {
             "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas",
             "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"};
 
+    public static String[] getEstadosArray() {
+        return estadosArray;
+    }
+
+    public static void setEstadosArray(String[] estadosArray) {
+        EstadosdeMexico.estadosArray = estadosArray;
+    }
+
     public  static   String[]  obtenerArrayEstado(){
         return  estadosArray;
     }
