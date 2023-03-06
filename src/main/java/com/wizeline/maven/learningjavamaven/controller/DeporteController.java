@@ -66,7 +66,7 @@ public class DeporteController {
     @GetMapping
     public ResponseEntity<List<DeporteDTO>> obtenerDeportes() {
       if (!bucket.tryConsume(1)) {
-          LOGGER.info("Mas de 5 peticiones no disponible");
+          LOGGER.info("Mas de 5 peticiones");
           return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
       }
         List<DeporteDTO> deportes = deporteService.obtenerTodosDeportes();
