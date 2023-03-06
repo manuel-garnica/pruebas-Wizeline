@@ -179,7 +179,6 @@
 						<exclude>com/wizeline/maven/learningjavamaven/utils/exceptions/**/*</exclude>
 
 					</excludes>
-
 				</configuration>
 				<executions>
 					<execution>
